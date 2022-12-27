@@ -1,5 +1,3 @@
-const { isValidObjectId } = require('mongoose');
-
 const {
   listContacts,
   getContactById,
@@ -8,152 +6,76 @@ const {
   updateContact,
   updateStatusContact,
 } = require('../services/contactsService');
-const {
-  contactAdditionSchema,
-  contactUpdateSchema,
-  contactStatusUpdateSchema,
-} = require('../utils/contactsSchema');
 
-const getContactsController = async (_, res, next) => {
-  try {
-    const data = await listContacts();
+const getContactsController = async (_, res) => {
+  const data = await listContacts();
 
-    res.json(data);
-  } catch (error) {
-    next(error);
-  }
+  res.json(data);
 };
 
-const getContactByIdController = async (req, res, next) => {
+const getContactByIdController = async (req, res) => {
   const contactId = req.params.contactId;
 
-  // Whether the contact id given by the client is correct according to MongoDB _id
-  const isValueContactId = isValidObjectId(contactId);
+  const data = await getContactById(contactId);
 
-  if (!isValueContactId) {
-    res.status(400).json('Incorrect contact id');
+  if (!data) {
+    res.status(404).json({ message: 'Contact has not been found.' });
   }
 
-  try {
-    const data = await getContactById(contactId);
-
-    if (!data) {
-      res.status(404).json({ message: 'Contact has not been found.' });
-    }
-
-    res.json(data);
-  } catch (error) {
-    next(error);
-  }
+  res.json(data);
 };
 
-const addContactController = async (req, res, next) => {
+const addContactController = async (req, res) => {
   const body = req.body;
 
-  const { error: validationError } = contactAdditionSchema.validate(body);
+  const addedContact = await addContact(body);
 
-  if (validationError) {
-    res
-      .status(400)
-      .json({ message: { ...validationError.details[0].message } });
-    return;
-  }
-
-  try {
-    const addedContact = await addContact(body);
-
-    res.status(201).json(addedContact);
-  } catch (error) {
-    next(error);
-  }
+  res.status(201).json(addedContact);
 };
 
-const removeContactByIdController = async (req, res, next) => {
+const removeContactByIdController = async (req, res) => {
   const contactId = req.params.contactId;
 
-  // Whether the contact id given by the client is correct according to MongoDB _id
-  const isValidContactId = isValidObjectId(contactId);
+  const removedContact = await removeContact(contactId);
 
-  if (!isValidContactId) {
-    res.status(400).json('Incorrect contact id');
+  if (!removedContact) {
+    res.status(404).json('Contact has not been found.');
   }
 
-  try {
-    const removedContact = await removeContact(contactId);
-
-    if (!removedContact) {
-      res.status(404).json('Contact has not been found.');
-    }
-
-    res.json(removedContact);
-  } catch (error) {
-    next(error);
-  }
+  res.json(removedContact);
 };
 
-const updateContactByIdController = async (req, res, next) => {
+const updateContactByIdController = async (req, res) => {
   const contactId = req.params.contactId;
   const body = req.body;
 
-  // Whether the contact id given by the client is correct according to MongoDB _id
-  const isValidContactId = isValidObjectId(contactId);
+  const updatedContact = await updateContact(contactId, body);
 
-  if (!isValidContactId) {
-    res.status(400).json('Incorrect contact id');
+  if (!updatedContact) {
+    res.status(404).json({ message: 'Contact has not been found.' });
   }
 
-  // body validation
-  const { error: validationError } = contactUpdateSchema.validate(body);
-
-  if (validationError) {
-    res
-      .status(400)
-      .json({ message: { ...validationError.details[0].message } });
-    return;
-  }
-
-  try {
-    const updatedContact = await updateContact(contactId, body);
-
-    if (!updatedContact) {
-      res.status(404).json({ message: 'Contact has not been found.' });
-    }
-
-    res.json(Object.assign(updatedContact, body));
-  } catch (error) {
-    next(error);
-  }
+  res.json(Object.assign(updatedContact, body));
 };
 
-const updateContactStatusByIdController = async (req, res, next) => {
+const updateContactStatusByIdController = async (req, res) => {
   const contactId = req.params.contactId;
   const body = req.body;
 
-  // Whether the contact id given by the client is correct according to MongoDB _id
-  const isValidContactId = isValidObjectId(contactId);
+  const updatedContact = await updateStatusContact(contactId, body);
 
-  if (!isValidContactId) {
-    res.status(400).json('Incorrect contact id.');
+  if (!updatedContact) {
+    res.status(404).json('Contact with the given id has not been found');
   }
 
-  // body validation
-  const { error: validationError } = contactStatusUpdateSchema.validate(body);
+  res.json(Object.assign(updatedContact, body));
+};
 
-  if (validationError) {
-    res
-      .status(400)
-      .json({ message: { ...validationError.details[0].message } });
-  }
-
-  try {
-    const updatedContact = await updateStatusContact(contactId, body);
-
-    if (!updatedContact) {
-      res.status(404).json('Contact with the given id has not been found');
-    }
-
-    res.json(Object.assign(updatedContact, body));
-  } catch (error) {
-    next(error);
-  }
+module.exports = {
+  getContactsController,
+  getContactByIdController,
+  addContactController,
+  removeContactByIdController,
+  updateContactByIdController,
+  updateContactStatusByIdController,
 };
