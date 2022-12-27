@@ -24,7 +24,7 @@ const contactAdditionSchema = Joi.object({
  * @param email - type string with email validation;
  * @param phone - type string with phone RegEx validation;
  * @param favorite - type boolean;
- * All variants are optional.
+ * All variants are optional, but at least one is required.
  */
 const contactUpdateSchema = Joi.object({
   name: Joi.string().alphanum(),
@@ -33,7 +33,7 @@ const contactUpdateSchema = Joi.object({
     /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/
   ),
   favorite: Joi.boolean(),
-});
+}).xor('name', 'email', 'phone', 'favorite');
 
 /**
  * Joi validation schema for contact status update

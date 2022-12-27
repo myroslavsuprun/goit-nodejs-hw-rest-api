@@ -24,11 +24,7 @@ module.exports = {
     const { error: validationError } = contactAdditionSchema.validate(body);
 
     if (validationError) {
-      next(
-        new ValidationError(
-          JSON.stringify({ message: { ...validationError.details[0].message } })
-        )
-      );
+      next(new ValidationError(validationError.details[0].message));
     }
 
     next();
@@ -49,11 +45,7 @@ module.exports = {
     const { error: validationError } = contactUpdateSchema.validate(body);
 
     if (validationError) {
-      next(
-        new ValidationError(
-          JSON.stringify({ message: { ...validationError.details[0].message } })
-        )
-      );
+      next(new ValidationError(validationError.details[0].message));
     }
 
     next();
@@ -74,11 +66,7 @@ module.exports = {
     const { error: validationError } = contactStatusUpdateSchema.validate(body);
 
     if (validationError) {
-      next(
-        new ValidationError(
-          JSON.stringify({ message: { ...validationError.details[0].message } })
-        )
-      );
+      next(new ValidationError(validationError.details[0].message));
     }
 
     next();
@@ -98,13 +86,7 @@ module.exports = {
     const isValueContactId = isValidObjectId(contactId);
 
     if (!isValueContactId) {
-      next(
-        new ValidationError(
-          JSON.stringify({
-            message: 'Incorrect contact id',
-          })
-        )
-      );
+      next(new ValidationError('Incorrect contact id'));
     }
 
     next();

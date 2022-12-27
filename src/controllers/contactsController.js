@@ -21,7 +21,7 @@ const getContactByIdController = async (req, res) => {
   const data = await getContactById(contactId);
 
   if (!data) {
-    throw new NotFoundError({ message: 'Contact has not been found.' });
+    throw new NotFoundError('Contact has not been found.');
   }
 
   res.json(data);
@@ -41,7 +41,7 @@ const removeContactByIdController = async (req, res) => {
   const removedContact = await removeContact(contactId);
 
   if (!removedContact) {
-    throw new NotFoundError({ message: 'Contact has not been found.' });
+    throw new NotFoundError('Contact has not been found.');
   }
 
   res.json(removedContact);
@@ -54,7 +54,7 @@ const updateContactByIdController = async (req, res) => {
   const updatedContact = await updateContact(contactId, body);
 
   if (!updatedContact) {
-    throw new NotFoundError({ message: 'Contact has not been found.' });
+    throw new NotFoundError('Contact has not been found.');
   }
 
   res.json(Object.assign(updatedContact, body));
@@ -67,7 +67,7 @@ const updateContactStatusByIdController = async (req, res) => {
   const updatedContact = await updateStatusContact(contactId, body);
 
   if (!updatedContact) {
-    throw new NotFoundError({ message: 'Contact has not been found.' });
+    throw new NotFoundError('Contact has not been found.');
   }
 
   res.json(Object.assign(updatedContact, body));
