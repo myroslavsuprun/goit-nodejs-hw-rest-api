@@ -1,3 +1,12 @@
+/**
+ * EnhancedError for checking instances;
+ *
+ * @class
+ *
+ * @constructor
+ * @param message - error message
+ * @param status - HTTP Status which is set to 400
+ */
 class EnhancedError extends Error {
   constructor(message) {
     super(message);
@@ -5,6 +14,14 @@ class EnhancedError extends Error {
   }
 }
 
+/**
+ * ValidationError
+ *
+ * @class
+ * @constructor
+ * @param message - error message
+ * @param status - HTTP Status which is set to 400
+ */
 class ValidationError extends EnhancedError {
   constructor(message) {
     super(message);
@@ -12,6 +29,14 @@ class ValidationError extends EnhancedError {
   }
 }
 
+/**
+ * NotFoundError
+ *
+ * @class
+ * @constructor
+ * @param message - error message
+ * @param status - HTTP Status which is set to 404
+ */
 class NotFoundError extends EnhancedError {
   constructor(message) {
     super(message);

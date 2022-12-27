@@ -8,18 +8,17 @@ const {
   updateContactStatusByIdController,
   addContactController,
 } = require('../controllers/contactsController');
+
+const { asyncWrapper } = require('../helpers/routeHelpers');
+
 const {
   addContactValidation,
   updateContactValidation,
   updateContactStatusValidation,
   idValidation,
 } = require('../middlewares/validationMiddleware');
-const { asyncWrapper } = require('../helpers/routeHelpers');
 
 const router = express.Router();
-
-// TODO: Move validation to services file. i.e. contact has not been found. it must not be here
-// TODO: Add comments JsDoc
 
 // GET: all contacts in the DB
 router.get('/', asyncWrapper(getContactsController));
