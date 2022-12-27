@@ -12,7 +12,15 @@ class ValidationError extends EnhancedError {
   }
 }
 
+class NotFoundError extends EnhancedError {
+  constructor(message) {
+    super(message);
+    this.status = 404;
+  }
+}
+
 module.exports = {
   EnhancedError,
   ValidationError,
+  NotFoundError,
 };

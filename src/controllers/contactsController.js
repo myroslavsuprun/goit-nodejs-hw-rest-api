@@ -7,6 +7,8 @@ const {
   updateStatusContact,
 } = require('../services/contactsService');
 
+const { NotFoundError } = require('../helpers/errorHelpers');
+
 const getContactsController = async (_, res) => {
   const data = await listContacts();
 
@@ -19,7 +21,7 @@ const getContactByIdController = async (req, res) => {
   const data = await getContactById(contactId);
 
   if (!data) {
-    res.status(404).json({ message: 'Contact has not been found.' });
+    throw new NotFoundError({ message: 'Contact has not been found.' });
   }
 
   res.json(data);
@@ -39,7 +41,7 @@ const removeContactByIdController = async (req, res) => {
   const removedContact = await removeContact(contactId);
 
   if (!removedContact) {
-    res.status(404).json('Contact has not been found.');
+    throw new NotFoundError({ message: 'Contact has not been found.' });
   }
 
   res.json(removedContact);
@@ -52,7 +54,7 @@ const updateContactByIdController = async (req, res) => {
   const updatedContact = await updateContact(contactId, body);
 
   if (!updatedContact) {
-    res.status(404).json({ message: 'Contact has not been found.' });
+    throw new NotFoundError({ message: 'Contact has not been found.' });
   }
 
   res.json(Object.assign(updatedContact, body));
@@ -65,7 +67,7 @@ const updateContactStatusByIdController = async (req, res) => {
   const updatedContact = await updateStatusContact(contactId, body);
 
   if (!updatedContact) {
-    res.status(404).json('Contact with the given id has not been found');
+    throw new NotFoundError({ message: 'Contact has not been found.' });
   }
 
   res.json(Object.assign(updatedContact, body));
