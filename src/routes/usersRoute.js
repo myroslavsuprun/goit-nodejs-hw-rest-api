@@ -1,16 +1,14 @@
 const express = require('express');
 
-// const {} = require('../controllers/contactsController');
-
-const { asyncWrapper } = require('../helpers/routeHelpers');
-const {
-  userRegistrationValidation,
-} = require('../middlewares/usersValidationMiddleware');
 const {
   userRegistrationController,
 } = require('../controllers/usersController');
 
-// const {} = require('../middlewares/validationMiddleware');
+const {
+  userRegistrationValidation,
+} = require('../middlewares/usersValidationMiddleware');
+
+const { asyncWrapper } = require('../helpers/routeHelpers');
 
 /**
  * Auth router middleware module

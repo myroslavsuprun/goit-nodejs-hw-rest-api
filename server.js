@@ -11,7 +11,7 @@ const startServer = async () => {
       if (error) {
         console.error(
           '\x1B[31m',
-          'An error has occurred durint the server launch',
+          'An error has occurred during the server launch',
           error
         );
       }

@@ -44,8 +44,24 @@ class NotFoundError extends EnhancedError {
   }
 }
 
+/**
+ * Conflict Error with 409 code
+ *
+ * @class
+ * @constructor
+ * @param message - error message
+ * @param status - HTTP status with 409 code
+ */
+class ConflictError extends EnhancedError {
+  constructor(message) {
+    super(message);
+    this.status = 409;
+  }
+}
+
 module.exports = {
   EnhancedError,
   ValidationError,
   NotFoundError,
+  ConflictError,
 };

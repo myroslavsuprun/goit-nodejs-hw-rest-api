@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+// TODO: extract to .env mongoDB URI
 
 /**
  * Mongoose connection to MongoDB

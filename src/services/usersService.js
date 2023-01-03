@@ -11,4 +11,15 @@ const addUser = async credentials => {
   return { email, subscription };
 };
 
-module.exports = { addUser };
+/**
+ * Search for one user in the DB with the provided credentials query.
+ *
+ * @param {object} credentials
+ * @returns found user from the DB or null
+ */
+const getUser = async credentials => {
+  const user = await User.findOne({ ...credentials });
+  return user;
+};
+
+module.exports = { addUser, getUser };
