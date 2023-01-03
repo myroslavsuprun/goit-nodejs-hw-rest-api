@@ -5,6 +5,7 @@ const { addUser } = require('../services/usersService');
 const userRegistrationController = async (req, res) => {
   const { password, email } = req.body;
 
+  // TODO: catch validation error inside mongoDB schema with enhanced error;
   const saltRounds = 10;
   const encryptedPassword = await bcrypt.hash(password, saltRounds);
 

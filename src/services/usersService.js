@@ -7,7 +7,8 @@ const { User } = require('../db/userModel');
  * @returns created user from the DB
  */
 const addUser = async credentials => {
-  return await User.create(credentials);
+  const { email, subscription } = await User.create(credentials);
+  return { email, subscription };
 };
 
 module.exports = { addUser };
