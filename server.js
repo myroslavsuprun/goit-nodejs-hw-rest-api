@@ -1,7 +1,10 @@
+// Configure the application before starting
+require('./src/preStart');
+
 const app = require('./src/app');
 const { connectMongo } = require('./src/db/connection');
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const startServer = async () => {
   try {

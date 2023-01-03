@@ -15,6 +15,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
+// TODO: Extract API router
 app.use(`/api${usersPaths.base}`, usersRouter);
 app.use('/api/contacts', contactsRouter);
 
