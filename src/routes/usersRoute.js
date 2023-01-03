@@ -8,8 +8,6 @@ const {
   userRegistrationValidation,
 } = require('../middlewares/usersValidationMiddleware');
 
-const { asyncWrapper } = require('../helpers/routeHelpers');
-
 /**
  * Auth router middleware module
  */
@@ -28,7 +26,7 @@ const router = express.Router();
 router.post(
   paths.registration,
   userRegistrationValidation,
-  asyncWrapper(userRegistrationController)
+  userRegistrationController
 );
 
 module.exports = { usersPaths: paths, usersRouter: router };

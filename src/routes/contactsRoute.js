@@ -9,8 +9,6 @@ const {
   addContactController,
 } = require('../controllers/contactsController');
 
-const { asyncWrapper } = require('../helpers/routeHelpers');
-
 const {
   addContactValidation,
   updateContactValidation,
@@ -21,28 +19,24 @@ const {
 const router = express.Router();
 
 // GET: all contacts in the DB
-router.get('/', asyncWrapper(getContactsController));
+router.get('/', getContactsController);
 
 // GET: by contact id
-router.get('/:contactId', idValidation, asyncWrapper(getContactByIdController));
+router.get('/:contactId', idValidation, getContactByIdController);
 
 /**
  * POST: Create and save a new contact in the DB.
  *
  * @returns new contact
  */
-router.post('/', addContactValidation, asyncWrapper(addContactController));
+router.post('/', addContactValidation, addContactController);
 
 /**
  * DELETE: Remove contact from the DB
  *
  * @returns removed contact
  */
-router.delete(
-  '/:contactId',
-  idValidation,
-  asyncWrapper(removeContactByIdController)
-);
+router.delete('/:contactId', idValidation, removeContactByIdController);
 
 /**
  * PUT: Updates exsiting contact in the DB
@@ -53,7 +47,7 @@ router.put(
   '/:contactId',
   idValidation,
   updateContactValidation,
-  asyncWrapper(updateContactByIdController)
+  updateContactByIdController
 );
 
 /**
@@ -65,7 +59,7 @@ router.patch(
   '/:contactId/favorite',
   idValidation,
   updateContactStatusValidation,
-  asyncWrapper(updateContactStatusByIdController)
+  updateContactStatusByIdController
 );
 
 module.exports = router;

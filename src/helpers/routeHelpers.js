@@ -1,22 +1,6 @@
 const { EnhancedError } = require('./errorHelpers');
 
 /**
- *
- * @param {*} controller
- * @returns new function which invokes the controller and catches internal errors.
- * Errors are sent next to the middleware.
- */
-const asyncWrapper = controller => {
-  return async (req, res, next) => {
-    try {
-      await controller(req, res);
-    } catch (error) {
-      next(error);
-    }
-  };
-};
-
-/**
  * Error handler middleware
  *
  * @param {*} error
@@ -34,6 +18,5 @@ const errorHandler = (error, _, res, __) => {
 };
 
 module.exports = {
-  asyncWrapper,
   errorHandler,
 };
