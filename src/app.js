@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const { errorHandler } = require('./helpers/routeHelpers');
 const contactsRouter = require('./routes/contactsRoute');
+const { usersPaths, usersRouter } = require('./routes/usersRoute');
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
+app.use(`/api${usersPaths.base}`, usersRouter);
 app.use('/api/contacts', contactsRouter);
 
 app.use((_, res) => {

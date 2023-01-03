@@ -8,7 +8,11 @@ const { EnhancedError } = require('./errorHelpers');
  */
 const asyncWrapper = controller => {
   return async (req, res, next) => {
-    await controller(req, res).catch(error => next(error));
+    try {
+      await controller(req, res);
+    } catch (error) {
+      next(error);
+    }
   };
 };
 

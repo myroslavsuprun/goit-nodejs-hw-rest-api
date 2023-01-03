@@ -16,7 +16,7 @@ const {
   updateContactValidation,
   updateContactStatusValidation,
   idValidation,
-} = require('../middlewares/validationMiddleware');
+} = require('../middlewares/contactsValidationMiddleware');
 
 const router = express.Router();
 
