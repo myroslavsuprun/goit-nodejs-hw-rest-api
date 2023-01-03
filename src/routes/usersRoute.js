@@ -4,9 +4,11 @@ const {
   userRegistrationController,
 } = require('../controllers/usersController');
 
+const { userRegistrationSchema } = require('../utils/userSchema');
+
 const {
-  userRegistrationValidation,
-} = require('../middlewares/usersValidationMiddleware');
+  validationBySchemaMiddleware,
+} = require('../middlewares/validationMiddlewares');
 
 /**
  * Auth router middleware module
@@ -25,7 +27,7 @@ const router = express.Router();
 
 router.post(
   paths.registration,
-  userRegistrationValidation,
+  validationBySchemaMiddleware(userRegistrationSchema, 'body'),
   userRegistrationController
 );
 

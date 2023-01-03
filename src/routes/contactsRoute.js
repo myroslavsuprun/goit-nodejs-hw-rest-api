@@ -10,11 +10,14 @@ const {
 } = require('../controllers/contactsController');
 
 const {
-  addContactValidation,
-  updateContactValidation,
-  updateContactStatusValidation,
-  idValidation,
-} = require('../middlewares/contactsValidationMiddleware');
+  validationBySchemaMiddleware,
+  idValidationMiddleware,
+} = require('../middlewares/validationMiddlewares');
+const {
+  contactUpdateSchema,
+  contactStatusUpdateSchema,
+  contactAdditionSchema,
+} = require('../utils/contactsSchema');
 
 const router = express.Router();
 
@@ -22,21 +25,29 @@ const router = express.Router();
 router.get('/', getContactsController);
 
 // GET: by contact id
-router.get('/:contactId', idValidation, getContactByIdController);
+router.get('/:contactId', idValidationMiddleware, getContactByIdController);
 
 /**
  * POST: Create and save a new contact in the DB.
  *
  * @returns new contact
  */
-router.post('/', addContactValidation, addContactController);
+router.post(
+  '/',
+  validationBySchemaMiddleware(contactAdditionSchema, 'body'),
+  addContactController
+);
 
 /**
  * DELETE: Remove contact from the DB
  *
  * @returns removed contact
  */
-router.delete('/:contactId', idValidation, removeContactByIdController);
+router.delete(
+  '/:contactId',
+  idValidationMiddleware,
+  removeContactByIdController
+);
 
 /**
  * PUT: Updates exsiting contact in the DB
@@ -45,8 +56,8 @@ router.delete('/:contactId', idValidation, removeContactByIdController);
  */
 router.put(
   '/:contactId',
-  idValidation,
-  updateContactValidation,
+  idValidationMiddleware,
+  validationBySchemaMiddleware(contactUpdateSchema, 'body'),
   updateContactByIdController
 );
 
@@ -57,8 +68,8 @@ router.put(
  */
 router.patch(
   '/:contactId/favorite',
-  idValidation,
-  updateContactStatusValidation,
+  idValidationMiddleware,
+  validationBySchemaMiddleware(contactStatusUpdateSchema, 'body'),
   updateContactStatusByIdController
 );
 
