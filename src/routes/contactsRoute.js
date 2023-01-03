@@ -1,4 +1,10 @@
+/**
+ * The file contains Router module for contacts path
+ */
 const express = require('express');
+
+// Paths
+const paths = require('./paths/contactsPaths');
 
 const {
   getContactsController,
@@ -9,23 +15,33 @@ const {
   addContactController,
 } = require('../controllers/contactsController');
 
+// Validation middlewares
 const {
   validationBySchemaMiddleware,
   idValidationMiddleware,
 } = require('../middlewares/validationMiddlewares');
+
+// Validation schemas
 const {
   contactUpdateSchema,
   contactStatusUpdateSchema,
   contactAdditionSchema,
 } = require('../utils/contactsSchema');
 
+// **** Declarations **** //
+
+/**
+ * Contacts route Router module
+ */
 const router = express.Router();
 
+// **** Middlewares **** //
+
 // GET: all contacts in the DB
-router.get('/', getContactsController);
+router.get(paths.main, getContactsController);
 
 // GET: by contact id
-router.get('/:contactId', idValidationMiddleware, getContactByIdController);
+router.get(paths.byContactId, idValidationMiddleware, getContactByIdController);
 
 /**
  * POST: Create and save a new contact in the DB.
@@ -33,7 +49,7 @@ router.get('/:contactId', idValidationMiddleware, getContactByIdController);
  * @returns new contact
  */
 router.post(
-  '/',
+  paths.main,
   validationBySchemaMiddleware(contactAdditionSchema, 'body'),
   addContactController
 );
@@ -44,7 +60,7 @@ router.post(
  * @returns removed contact
  */
 router.delete(
-  '/:contactId',
+  paths.byContactId,
   idValidationMiddleware,
   removeContactByIdController
 );
@@ -55,7 +71,7 @@ router.delete(
  * @returns updated contact
  */
 router.put(
-  '/:contactId',
+  paths.byContactId,
   idValidationMiddleware,
   validationBySchemaMiddleware(contactUpdateSchema, 'body'),
   updateContactByIdController
@@ -67,10 +83,12 @@ router.put(
  * @returns updated contact
  */
 router.patch(
-  '/:contactId/favorite',
+  paths.favoriteByContactId,
   idValidationMiddleware,
   validationBySchemaMiddleware(contactStatusUpdateSchema, 'body'),
   updateContactStatusByIdController
 );
+
+// **** Export **** //
 
 module.exports = router;

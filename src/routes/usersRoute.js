@@ -1,25 +1,26 @@
 const express = require('express');
 
+// Paths
+const paths = require('./paths/usersPaths');
+
+// Controllers
 const {
   userRegistrationController,
 } = require('../controllers/usersController');
 
-const { userRegistrationSchema } = require('../utils/userSchema');
-
+// Middlewares
 const {
   validationBySchemaMiddleware,
 } = require('../middlewares/validationMiddlewares');
+
+// Schemas
+const { userRegistrationSchema } = require('../utils/userSchema');
 
 /**
  * Auth router middleware module
  */
 
 // **** Variables **** //
-
-const paths = {
-  base: '/users',
-  registration: '/signup',
-};
 
 const router = express.Router();
 
@@ -31,4 +32,6 @@ router.post(
   userRegistrationController
 );
 
-module.exports = { usersPaths: paths, usersRouter: router };
+// **** Export **** //
+
+module.exports = { usersRouter: router };
