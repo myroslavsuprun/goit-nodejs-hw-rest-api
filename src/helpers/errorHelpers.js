@@ -59,9 +59,25 @@ class ConflictError extends EnhancedError {
   }
 }
 
+/**
+ * Unauthorized error with 401 code;
+ *
+ * @class
+ * @constructor
+ * @param message - error message
+ * @param status - HTTP status with 401 code
+ */
+class NotAuthorizedError extends EnhancedError {
+  constructor(message) {
+    super(message);
+    this.status = 401;
+  }
+}
+
 module.exports = {
   EnhancedError,
   ValidationError,
   NotFoundError,
   ConflictError,
+  NotAuthorizedError,
 };

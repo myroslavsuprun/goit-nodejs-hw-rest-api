@@ -1,8 +1,12 @@
 const bcrypt = require('bcrypt');
 
 const { addUser, getUser } = require('../services/usersService');
-const { ConflictError } = require('../helpers/errorHelpers');
+const {
+  ConflictError,
+  NotAuthorizedError,
+} = require('../helpers/errorHelpers');
 
+// TODO: Move all the logic to services, not in controllers
 const userRegistrationController = async (req, res) => {
   const { password, email } = req.body;
 
@@ -26,7 +30,25 @@ const userRegistrationController = async (req, res) => {
    */
   const createdUser = await addUser({ password: encryptedPassword, email });
 
+  /**
+   * Response with the created user
+   */
   res.json(createdUser);
 };
 
-module.exports = { userRegistrationController };
+const userLoginController = async (req, res) => {
+  const { password, email } = req.body;
+
+  const user = await getUser({ email });
+
+  if (!user) {
+    throw new NotAuthorizedError('The email or password is incorrect.');
+  }
+
+  if (!(await bcrypt.compare(password, user.password))) {
+    throw new NotAuthorizedError('The email or password is incorrect.');
+  }
+  res.json(req.body);
+};
+
+module.exports = { userRegistrationController, userLoginController };
