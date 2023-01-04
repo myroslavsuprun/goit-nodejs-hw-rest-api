@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const { Schema, SchemaTypes } = mongoose;
 
@@ -26,6 +27,21 @@ const userSchema = new Schema({
     ref: 'user',
   },
 });
+
+userSchema.pre('save', async function (next) {
+  if (this.isModified('password')) {
+    const saltRounds = 10;
+
+    const encryptedPassword = await bcrypt.hash(this.password, saltRounds);
+    this.password = encryptedPassword;
+  }
+
+  next();
+});
+
+userSchema.methods.isValidPassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
 /**
  * MongoDB User model
