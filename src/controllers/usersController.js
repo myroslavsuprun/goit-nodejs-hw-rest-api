@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-const { addUser, getUser } = require('../services/usersService');
+const { addUser, getUser, updateUser } = require('../services/usersService');
 const {
   ConflictError,
   NotAuthorizedError,
@@ -48,7 +49,26 @@ const userLoginController = async (req, res) => {
   if (!(await bcrypt.compare(password, user.password))) {
     throw new NotAuthorizedError('The email or password is incorrect.');
   }
-  res.json(req.body);
+
+  const payload = {
+    email,
+    id: user.id,
+  };
+
+  const token = jwt.sign({ ...payload }, process.env.JWT_SECRET, {
+    expiresIn: '2d',
+  });
+
+  await updateUser({ email }, { token });
+
+  const responseData = {
+    id: user.id,
+    email,
+    subscription: user.subscription,
+    token,
+  };
+
+  res.json(responseData);
 };
 
 module.exports = { userRegistrationController, userLoginController };

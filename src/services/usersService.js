@@ -22,4 +22,20 @@ const getUser = async credentials => {
   return user;
 };
 
-module.exports = { addUser, getUser };
+/**
+ * Update user credentials in the DB.
+ *
+ * @param {object} filterCredentials - credentials date object to find the user in the DB.
+ * @param {object} credentialsToUpdate - credentials date object to update.
+ * @returns response information
+ */
+const updateUser = async (filterCredentials, credentialsToUpdate) => {
+  const user = await User.updateOne(
+    { ...filterCredentials },
+    { ...credentialsToUpdate }
+  );
+
+  return user;
+};
+
+module.exports = { addUser, getUser, updateUser };
