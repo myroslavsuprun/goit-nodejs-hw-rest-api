@@ -3,8 +3,9 @@ require('./src/preStart');
 
 const app = require('./src/app');
 const { connectMongo } = require('./src/db/connection');
+const envVariables = require('./src/utils/envVariables');
 
-const port = process.env.PORT || 3000;
+const port = envVariables.PORT || 3000;
 
 const startServer = async () => {
   try {

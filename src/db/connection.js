@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
-// TODO: extract to .env mongoDB URI
+
+const envVariables = require('../utils/envVariables');
+
+const URI = envVariables.MONGO_CONNECTION_URI;
 
 /**
  * Mongoose connection to MongoDB
@@ -8,9 +11,7 @@ const mongoose = require('mongoose');
  */
 const connectMongo = async () => {
   mongoose.set('strictQuery', true);
-  return await mongoose.connect(
-    process.env.MONGO_CONNECTION_URI
-  );
+  return await mongoose.connect(URI);
 };
 
 module.exports = {

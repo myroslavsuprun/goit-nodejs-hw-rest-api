@@ -7,7 +7,9 @@ const {
   NotAuthorizedError,
 } = require('../helpers/errorHelpers');
 
-const SECRET_KEY = process.env.JWT_SECRET;
+const envVariables = require('../utils/envVariables');
+
+const SECRET_KEY = envVariables.JWT_SECRET;
 
 /**
  * Authentication user service
