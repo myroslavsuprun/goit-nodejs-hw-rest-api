@@ -1,4 +1,4 @@
-const { EnhancedError } = require('./errorHelpers');
+const { EnhancedError } = require('../helpers/errorHelpers');
 
 /**
  * Error handler middleware
@@ -17,6 +17,4 @@ const errorHandler = (error, _, res, __) => {
   res.status(500).json({ message: error.message });
 };
 
-module.exports = {
-  errorHandler,
-};
+module.exports = errorHandler;

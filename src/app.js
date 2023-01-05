@@ -14,7 +14,8 @@ const cors = require('cors');
 const apiRouter = require('./routes/apiRoute');
 
 // Handlers
-const { errorHandler } = require('./helpers/routeHelpers');
+const errorHandler = require('./middlewares/errorHandler');
+const notFoundHandler = require('./middlewares/notFoundHandler');
 
 // **** Declarations **** //
 
@@ -28,12 +29,13 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-app.use('/api', apiRouter);
-// TODO: Add handlers with not found and error handler
-app.use((_, res) => {
-  res.status(404).json({ message: 'Not found' });
-});
+// **** Routes **** //
 
+app.use('/api', apiRouter);
+
+// **** Middlewares **** //
+
+app.use(notFoundHandler);
 app.use(errorHandler);
 
 // **** Export **** //
