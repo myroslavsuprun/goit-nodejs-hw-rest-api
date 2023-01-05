@@ -28,6 +28,7 @@ const {
   contactUpdateSchema,
   contactStatusUpdateSchema,
   contactAdditionSchema,
+  getContactsQuerySchema,
 } = require('../utils/contactsSchema');
 
 // **** Declarations **** //
@@ -42,7 +43,12 @@ const router = express.Router();
 router.use(authMiddleware);
 
 // GET: all contacts in the DB
-router.get(paths.main, getContactsController);
+router.get(
+  paths.main,
+  validationBySchemaMiddleware(getContactsQuerySchema, 'body'),
+  validationBySchemaMiddleware(getContactsQuerySchema, 'query'),
+  getContactsController
+);
 
 // GET: by contact id
 router.get(paths.byContactId, idValidationMiddleware, getContactByIdController);

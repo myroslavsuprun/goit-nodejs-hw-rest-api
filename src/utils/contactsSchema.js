@@ -1,12 +1,23 @@
 const Joi = require('joi');
 
 /**
+ * Joi validation schema for GET contacts query.
+ *
+ * @param page - type string with the default value 1; must be numbers only.
+ * @param limit - type string with the default value 20; must be numbers only.
+ */
+const getContactsQuerySchema = Joi.object({
+  page: Joi.string().regex(/^\d+$/),
+  limit: Joi.string().regex(/^\d+$/),
+});
+
+/**
  * Joi validation schema for new contact addition
  *
  * @param name - with type string, and aplhanum with validation; required
  * @param email - type string with email validation; required
  * @param phone - type string with phone RegEx validation; required
- * @param favorite - type boolean with default false value;
+ * @param favorite - type boolean with the default value false;
  */
 const contactAdditionSchema = Joi.object({
   name: Joi.string().alphanum().required(),
@@ -45,6 +56,7 @@ const contactStatusUpdateSchema = Joi.object({
 });
 
 module.exports = {
+  getContactsQuerySchema,
   contactAdditionSchema,
   contactUpdateSchema,
   contactStatusUpdateSchema,

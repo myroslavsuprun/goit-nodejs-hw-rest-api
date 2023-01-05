@@ -1,11 +1,33 @@
 const { Contact } = require('../db/contactModel');
+const { ValidationError } = require('../helpers/errorHelpers');
 
 /**
  * Get all the contacts from the DB
  * @async
  * @returns Contacts from the DB
  */
-const listContacts = async () => await Contact.find({});
+const listContacts = async ({ page = '1', limit = '20' }) => {
+  // Converting string number to integers.
+  page = parseInt(page, 10);
+  limit = parseInt(limit, 10);
+
+  if (limit >= 21) {
+    throw new ValidationError('"limit" property cannot be more than 20.');
+  }
+
+  // Setting the skip value.
+  const skip = (page - 1) * limit;
+
+  // Declaring find query for Contact model.
+  const query = Contact.find({});
+
+  // Setting query options.
+  query.limit(limit);
+  query.skip(skip);
+
+  // Executing the query and returning the result.
+  return await query.exec();
+};
 
 /**
  * Get contact by id from the DB
@@ -35,6 +57,7 @@ const removeContact = async contactId => {
  */
 const addContact = async body => await Contact.create({ ...body });
 
+// TODO: set new value as the third argument
 /**
  * Updates contact with the given properties on the DB
  *

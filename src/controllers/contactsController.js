@@ -9,22 +9,24 @@ const {
 
 const { NotFoundError } = require('../helpers/errorHelpers');
 
-const getContactsController = async (_, res) => {
-  const data = await listContacts();
+const getContactsController = async (req, res) => {
+  const { page = '1', limit = '20' } = req.query;
 
-  res.json(data);
+  const contacts = await listContacts({ page, limit });
+
+  res.json(contacts);
 };
 
 const getContactByIdController = async (req, res) => {
   const contactId = req.params.contactId;
 
-  const data = await getContactById(contactId);
+  const contact = await getContactById(contactId);
 
-  if (!data) {
+  if (!contact) {
     throw new NotFoundError('Contact has not been found.');
   }
 
-  res.json(data);
+  res.json(contact);
 };
 
 const addContactController = async (req, res) => {
