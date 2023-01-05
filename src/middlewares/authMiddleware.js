@@ -28,6 +28,9 @@ const authMiddleware = async (req, _, next) => {
     throw new NotAuthorizedError('Not Authorized');
   }
 
+  // Adding user's credential into request object.
+  req.user = { id };
+
   next();
 };
 

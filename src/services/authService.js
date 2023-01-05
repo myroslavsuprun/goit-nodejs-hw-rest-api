@@ -27,7 +27,7 @@ class AuthService {
    * @method
    * @memberof AuthService
    * @param {object} body - object containing password and email
-   * @returns credentials of the newly created user for the client
+   * @returns user's credentials
    */
   async createUser(body) {
     const user = await User.findOne({ email: body.email });
@@ -36,13 +36,9 @@ class AuthService {
       throw new ConflictError('User with the provided email already exists.');
     }
 
-    const { id, email, subscription } = await User.create(body);
+    const createdUser = await User.create(body);
 
-    return {
-      id,
-      email,
-      subscription,
-    };
+    return createdUser;
   }
 
   /**
@@ -52,7 +48,7 @@ class AuthService {
    * @method
    * @memberof AuthService
    * @param {object} body - object containing password and email
-   * @returns JWT, and authorized user's credentials for the client
+   * @returns user's credentials
    */
   async loginUser(body) {
     const user = await this.#getUser({ ...body });
@@ -61,11 +57,28 @@ class AuthService {
       throw new NotAuthorizedError('The email or password is incorrect.');
     }
 
-    const { email, id, subscription } = user;
+    const { id } = user;
 
     const token = this.#generateToken({ id });
     await User.findByIdAndUpdate(id, { token });
-    return { id, email, subscription, token };
+
+    // Update token value in the user object.
+    Object.assign(user, { token });
+
+    return user;
+  }
+
+  /**
+   * Remove user's token from the DB
+   *
+   * @public
+   * @method
+   * @memberof AuthService
+   * @param {string} id - user's _id
+   * @returns user's credentials before token update
+   */
+  async logoutUser(id) {
+    return await User.findByIdAndUpdate(id, { token: null });
   }
 
   /**
@@ -79,19 +92,6 @@ class AuthService {
    */
   async getUserById(id) {
     return await User.findById(id);
-  }
-
-  /**
-   * Remove user's token from the DB
-   *
-   * @public
-   * @method
-   * @memberof AuthService
-   * @param {string} id - user's _id
-   * @returns user's credentials before token removal
-   */
-  async logoutUser(id) {
-    return await User.findByIdAndUpdate(id, { token: null });
   }
 
   /**

@@ -7,12 +7,15 @@ const paths = require('./paths/usersPaths');
 const {
   userRegistrationController,
   userLoginController,
+  userLogoutController,
+  userCurrentController,
 } = require('../controllers/usersController');
 
 // Middlewares
 const {
   validationBySchemaMiddleware,
 } = require('../middlewares/validationMiddlewares');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 // Schemas
 const { userSchema } = require('../utils/userSchema');
@@ -36,6 +39,11 @@ router.post(
   validationBySchemaMiddleware(userSchema, 'body'),
   userLoginController
 );
+
+router.get(paths.logout, authMiddleware, userLogoutController);
+
+router.get(paths.current, authMiddleware, userCurrentController);
+
 // **** Export **** //
 
 module.exports = { usersRouter: router };
