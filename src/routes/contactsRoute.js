@@ -15,6 +15,8 @@ const {
   addContactController,
 } = require('../controllers/contactsController');
 
+const authMiddleware = require('../middlewares/authMiddleware');
+
 // Validation middlewares
 const {
   validationBySchemaMiddleware,
@@ -36,6 +38,8 @@ const {
 const router = express.Router();
 
 // **** Middlewares **** //
+
+router.use(authMiddleware);
 
 // GET: all contacts in the DB
 router.get(paths.main, getContactsController);

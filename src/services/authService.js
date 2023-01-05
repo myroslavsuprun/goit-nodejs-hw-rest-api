@@ -63,13 +63,24 @@ class AuthService {
 
     const { email, id, subscription } = user;
 
-    const token = this.#generateToken({ email, id, subscription });
-    await User.findByIdAndUpdate(id, token);
-
+    const token = this.#generateToken({ id });
+    await User.findByIdAndUpdate(id, { token });
     return { id, email, subscription, token };
   }
 
-  // TODO: Check what it might return
+  /**
+   * Get user's data from the DB by id.
+   *
+   * @public
+   * @method
+   * @memberof AuthService
+   * @param {string} id
+   * @returns user's credentials
+   */
+  async getUserById(id) {
+    return await User.findById(id);
+  }
+
   /**
    * Remove user's token from the DB
    *
