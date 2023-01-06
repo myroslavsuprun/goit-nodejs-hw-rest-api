@@ -9,12 +9,17 @@ const { EnhancedError } = require('../helpers/errorHelpers');
  * @param {*} next
  * @returns
  */
-const errorHandler = (error, _, res, __) => {
+
+const customErrorHandler = (error, _, res, next) => {
   if (error instanceof EnhancedError) {
     return res.status(error.status).json({ message: error.message });
   }
 
+  next(error);
+};
+
+const errorHandler = (error, _, res, __) => {
   res.status(500).json({ message: error.message });
 };
 
-module.exports = errorHandler;
+module.exports = { customErrorHandler, errorHandler };

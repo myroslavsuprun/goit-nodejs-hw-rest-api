@@ -14,7 +14,10 @@ const cors = require('cors');
 const apiRouter = require('./routes/apiRoute');
 
 // Handlers
-const errorHandler = require('./middlewares/errorHandler');
+const {
+  errorHandler,
+  customErrorHandler,
+} = require('./middlewares/errorHandler');
 const notFoundHandler = require('./middlewares/notFoundHandler');
 
 // **** Declarations **** //
@@ -36,6 +39,7 @@ app.use('/api', apiRouter);
 // **** Middlewares **** //
 
 app.use(notFoundHandler);
+app.use(customErrorHandler);
 app.use(errorHandler);
 
 // **** Export **** //

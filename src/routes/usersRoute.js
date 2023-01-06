@@ -57,4 +57,4 @@ router.get(paths.current, authMiddleware, userCurrentController);
 
 // **** Export **** //
 
-module.exports = { usersRouter: router };
+module.exports = router;

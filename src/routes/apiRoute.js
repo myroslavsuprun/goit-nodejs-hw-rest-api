@@ -5,7 +5,7 @@ const express = require('express');
 
 // Routers
 const contactsRouter = require('./contactsRoute');
-const { usersRouter } = require('./usersRoute');
+const usersRouter = require('./usersRoute');
 
 // Paths
 const usersPaths = require('./paths/usersPaths');
