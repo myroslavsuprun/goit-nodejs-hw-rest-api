@@ -1,10 +1,25 @@
 const { NotFoundError } = require('../helpers/errorHelpers');
 const AuthService = require('../services/authService');
 
+const userSubscriptionUpdateController = async (req, res) => {
+  const { subscription } = req.body;
+
+  // Extracting user's id which assigned in auth middleware.
+  const { id } = req.user;
+
+  const user = await AuthService.updateUserSubscription({
+    id,
+    subscription,
+  });
+
+  res.json({ subscription: user.subscription });
+};
+
 const userRegistrationController = async (req, res) => {
   const user = await AuthService.createUser(req.body);
 
   const { email, subscription } = user;
+  res.status(201);
   res.json({ email, subscription });
 };
 
@@ -42,6 +57,7 @@ const userCurrentController = async (req, res) => {
 };
 
 module.exports = {
+  userSubscriptionUpdateController,
   userRegistrationController,
   userLoginController,
   userLogoutController,

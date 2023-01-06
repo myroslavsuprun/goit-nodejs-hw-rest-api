@@ -81,6 +81,10 @@ class AuthService {
     return await User.findByIdAndUpdate(id, { token: null });
   }
 
+  async updateUserSubscription({ id, subscription }) {
+    return await User.findByIdAndUpdate(id, { subscription }, { new: true });
+  }
+
   /**
    * Get user's data from the DB by id.
    *

@@ -9,6 +9,7 @@ const {
   userLoginController,
   userLogoutController,
   userCurrentController,
+  userSubscriptionUpdateController,
 } = require('../controllers/usersController');
 
 // Middlewares
@@ -18,7 +19,10 @@ const {
 const authMiddleware = require('../middlewares/authMiddleware');
 
 // Schemas
-const { userSchema } = require('../utils/userSchema');
+const {
+  userSchema,
+  userSubscriptionUpdateSchema,
+} = require('../utils/userSchema');
 
 // **** Variables **** //
 /**
@@ -27,6 +31,13 @@ const { userSchema } = require('../utils/userSchema');
 const router = express.Router();
 
 // **** Functions **** //
+
+router.patch(
+  paths.main,
+  authMiddleware,
+  validationBySchemaMiddleware(userSubscriptionUpdateSchema, 'body'),
+  userSubscriptionUpdateController
+);
 
 router.post(
   paths.registration,
