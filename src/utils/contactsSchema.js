@@ -9,6 +9,7 @@ const Joi = require('joi');
 const getContactsQuerySchema = Joi.object({
   page: Joi.string().regex(/^\d+$/),
   limit: Joi.string().regex(/^\d+$/),
+  favorite: Joi.boolean().optional(),
 });
 
 /**

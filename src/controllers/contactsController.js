@@ -10,9 +10,9 @@ const {
 const { NotFoundError } = require('../helpers/errorHelpers');
 
 const getContactsController = async (req, res) => {
-  const { page = '1', limit = '20' } = req.query;
+  const { page = '1', limit = '20', favorite } = req.query;
 
-  const contacts = await listContacts({ page, limit });
+  const contacts = await listContacts({ page, limit, favorite });
 
   res.json(contacts);
 };
