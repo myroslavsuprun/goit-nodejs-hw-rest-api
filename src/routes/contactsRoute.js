@@ -45,7 +45,6 @@ router.use(authMiddleware);
 // GET: all contacts in the DB
 router.get(
   paths.main,
-  validationBySchemaMiddleware(getContactsQuerySchema, 'body'),
   validationBySchemaMiddleware(getContactsQuerySchema, 'query'),
   getContactsController
 );

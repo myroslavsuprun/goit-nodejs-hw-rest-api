@@ -59,7 +59,7 @@ const updateContactByIdController = async (req, res) => {
     throw new NotFoundError('Contact has not been found.');
   }
 
-  res.json(Object.assign(updatedContact, body));
+  res.json(updatedContact);
 };
 
 const updateContactStatusByIdController = async (req, res) => {
@@ -72,7 +72,7 @@ const updateContactStatusByIdController = async (req, res) => {
     throw new NotFoundError('Contact has not been found.');
   }
 
-  res.json(Object.assign(updatedContact, body));
+  res.json(updatedContact);
 };
 
 module.exports = {

@@ -57,7 +57,6 @@ const removeContact = async contactId => {
  */
 const addContact = async body => await Contact.create({ ...body });
 
-// TODO: set new value as the third argument
 /**
  * Updates contact with the given properties on the DB
  *
@@ -67,7 +66,11 @@ const addContact = async body => await Contact.create({ ...body });
  * @returns Contact before update from the DB
  */
 const updateContact = async (contactId, body) => {
-  return await Contact.findByIdAndUpdate(contactId, { $set: { ...body } });
+  return await Contact.findByIdAndUpdate(
+    contactId,
+    { $set: { ...body } },
+    { new: true }
+  );
 };
 
 /**
@@ -79,9 +82,11 @@ const updateContact = async (contactId, body) => {
  * @returns Contact before update from the DB
  */
 const updateStatusContact = async (contactId, body) => {
-  const data = await Contact.findByIdAndUpdate(contactId, {
-    $set: { favorite: body.favorite },
-  });
+  const data = await Contact.findByIdAndUpdate(
+    contactId,
+    { $set: { favorite: body.favorite } },
+    { new: true }
+  );
 
   return data;
 };
