@@ -10,7 +10,7 @@ const {
   userLogoutController,
   userCurrentController,
   userSubscriptionUpdateController,
-} = require('../controllers/usersController');
+} = require('../controllers/users');
 
 // Middlewares
 const {

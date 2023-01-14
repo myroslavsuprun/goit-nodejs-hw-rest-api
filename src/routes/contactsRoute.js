@@ -13,7 +13,7 @@ const {
   updateContactByIdController,
   updateContactStatusByIdController,
   addContactController,
-} = require('../controllers/contactsController');
+} = require('../controllers/contacts');
 
 const authMiddleware = require('../middlewares/authMiddleware');
 
