@@ -10,7 +10,6 @@ const envVariables = require('../utils/envVariables');
  * If token is not valid, an error is thrown.
  */
 const authMiddleware = async (req, _, next) => {
-  
   if (!req.headers?.authorization) {
     throw new NotAuthorizedError('Not Authorized.');
   }
