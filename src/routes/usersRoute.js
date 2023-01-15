@@ -35,9 +35,9 @@ const path = require('path');
  */
 const router = express.Router();
 
-// TODO: Extract multer to middlewares somewhere =)
+// TODO: Extract multer to middlewares somewhere away =)
 // Multer
-const uploadDir = path.join(process.cwd(), 'public/avatars');
+const uploadDir = path.join(process.cwd(), 'tmp');
 
 const storage = multer.diskStorage({
   destination: function (_, __, cb) {

@@ -9,8 +9,14 @@ const {
 } = require('../helpers/errorHelpers');
 
 const envVariables = require('../utils/envVariables');
+const resizeAndMoveImage = require('../utils/resizeAndMoveImage');
+
+// **** Declarations **** //
 
 const SECRET_KEY = envVariables.JWT_SECRET;
+const uploadDir = path.join(process.cwd(), 'public', 'avatars');
+
+// **** Functions **** //
 
 /**
  * Authentication user service
@@ -86,15 +92,28 @@ class AuthService {
     return await User.findByIdAndUpdate(id, { subscription }, { new: true });
   }
 
+  /**
+   * Uploades resized image into public directory, saves the path to the image directory on MongoDB.
+   *
+   * @param {object} avatar - Avatar object containing avatar path and filename;
+   * @param {string} id - user Id for updating the avatar;
+   * @returns - image path.
+   */
   async updateUserAvatar(avatar, id) {
-    const paths = avatar.path.split(path.sep).slice(-3).join('/');
-    const padPath = paths.padStart(paths.length + 1, '/');
-
-    return await User.findByIdAndUpdate(
-      id,
-      { avatarURL: padPath },
-      { new: true }
+    // Resize the image and move it to another directory.
+    avatar.path = await resizeAndMoveImage(
+      avatar.path,
+      uploadDir,
+      avatar.filename
     );
+
+    // Receving relative path from our project "root" directory.
+    const relativePath = avatar.path.split(path.sep).slice(-3);
+
+    // Joining the path into a valid string.
+    const avatarURL = path.join('/', ...relativePath);
+
+    return await User.findByIdAndUpdate(id, { avatarURL }, { new: true });
   }
 
   /**
@@ -149,5 +168,7 @@ class AuthService {
     return token;
   }
 }
+
+// **** Exports **** //
 
 module.exports = new AuthService();
