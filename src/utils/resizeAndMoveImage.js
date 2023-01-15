@@ -15,9 +15,9 @@ const path = require('path');
 async function resizeAndMoveImage(imagePath, movePath, imageName) {
   const image = await Jimp.read(imagePath);
   const resizedImage = await image.resize(250, 250);
-  resizedImage.write(movePath);
+  await resizedImage.writeAsync(path.join(movePath, imageName));
 
-  // await fs.unlink(imagePath);
+  await fs.unlink(imagePath);
 
   return path.join(movePath, imageName);
 }
