@@ -1,9 +1,14 @@
-const userAvatarUpdateController = (req, res) => {
+const authService = require('../../services/authService');
+
+const userAvatarUpdateController = async (req, res) => {
   const avatar = req.file;
-  // Extracting user Id which was passed throught AuthMiddleware
   const userId = req.user.id;
 
-  res.send(avatar);
+  const user = await authService.updateUserAvatar(avatar, userId);
+
+  const { avatarURL } = user;
+
+  res.json({ avatarURL });
 };
 
 module.exports = { userAvatarUpdateController };

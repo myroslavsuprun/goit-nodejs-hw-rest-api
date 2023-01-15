@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const path = require('path');
 
 const { User } = require('../db/userModel');
 
@@ -83,6 +84,17 @@ class AuthService {
 
   async updateUserSubscription({ id, subscription }) {
     return await User.findByIdAndUpdate(id, { subscription }, { new: true });
+  }
+
+  async updateUserAvatar(avatar, id) {
+    const paths = avatar.path.split(path.sep).slice(-3).join('/');
+    const padPath = paths.padStart(paths.length + 1, '/');
+
+    return await User.findByIdAndUpdate(
+      id,
+      { avatarURL: padPath },
+      { new: true }
+    );
   }
 
   /**

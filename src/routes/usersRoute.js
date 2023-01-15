@@ -26,13 +26,32 @@ const {
   userSubscriptionUpdateSchema,
 } = require('../utils/userSchema');
 
+// Miscellaneous
+const path = require('path');
+
 // **** Variables **** //
 /**
  * Auth Router module for users path.
  */
 const router = express.Router();
 
-const upload = multer({ dest: 'uploads/' });
+// TODO: Extract multer to middlewares somewhere =)
+// Multer
+const uploadDir = path.join(process.cwd(), 'public/avatars');
+
+const storage = multer.diskStorage({
+  destination: function (_, __, cb) {
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const [, fileExtension] = file.originalname.split('.');
+    const userId = req.user.id;
+
+    cb(null, `${userId}.${fileExtension}`);
+  },
+});
+
+const upload = multer({ storage });
 
 // **** Functions **** //
 
