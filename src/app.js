@@ -12,6 +12,7 @@ const cors = require('cors');
 
 // Routers
 const apiRouter = require('./routes/apiRoute');
+const publicRouter = require('./routes/publicRoute');
 
 // Handlers
 const {
@@ -35,6 +36,7 @@ app.use(express.json());
 // **** Routes **** //
 
 app.use('/api', apiRouter);
+app.use('/public', publicRouter);
 
 // **** Middlewares **** //
 
