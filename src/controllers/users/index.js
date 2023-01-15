@@ -4,4 +4,5 @@ module.exports = {
   ...require('./userLogout'),
   ...require('./userRegistration'),
   ...require('./userSubscriptionUpdate'),
+  ...require('./userAvatarUpdate'),
 };

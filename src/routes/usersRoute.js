@@ -10,9 +10,11 @@ const {
   userLogoutController,
   userCurrentController,
   userSubscriptionUpdateController,
+  userAvatarUpdateController,
 } = require('../controllers/users');
 
 // Middlewares
+const multer = require('multer');
 const {
   validationBySchemaMiddleware,
 } = require('../middlewares/validationMiddlewares');
@@ -29,6 +31,8 @@ const {
  * Auth Router module for users path.
  */
 const router = express.Router();
+
+const upload = multer({ dest: 'uploads/' });
 
 // **** Functions **** //
 
@@ -54,6 +58,13 @@ router.post(
 router.get(paths.logout, authMiddleware, userLogoutController);
 
 router.get(paths.current, authMiddleware, userCurrentController);
+
+router.post(
+  paths.avatars,
+  authMiddleware,
+  upload.single('avatar'),
+  userAvatarUpdateController
+);
 
 // **** Export **** //
 

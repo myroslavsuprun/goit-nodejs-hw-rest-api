@@ -11,9 +11,9 @@ const userCurrentController = async (req, res) => {
     throw new NotFoundError('User has not been found.');
   }
 
-  const { email, subscription } = user;
+  const { email, subscription, avatarURL } = user;
 
-  res.json({ email, subscription });
+  res.json({ email, subscription, avatarURL });
 };
 
 module.exports = { userCurrentController };
