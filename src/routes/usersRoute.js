@@ -14,7 +14,9 @@ const {
 } = require('../controllers/users');
 
 // Middlewares
-const multer = require('multer');
+const {
+  uploadAvatarMiddleware,
+} = require('../middlewares/uploadAvatarMiddleware');
 const {
   validationBySchemaMiddleware,
 } = require('../middlewares/validationMiddlewares');
@@ -26,32 +28,12 @@ const {
   userSubscriptionUpdateSchema,
 } = require('../utils/userSchema');
 
-// Miscellaneous
-const path = require('path');
-
 // **** Variables **** //
+
 /**
  * Auth Router module for users path.
  */
 const router = express.Router();
-
-// TODO: Extract multer to middlewares somewhere away =)
-// Multer
-const uploadDir = path.join(process.cwd(), 'tmp');
-
-const storage = multer.diskStorage({
-  destination: function (_, __, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    const [, fileExtension] = file.originalname.split('.');
-    const userId = req.user.id;
-
-    cb(null, `${userId}.${fileExtension}`);
-  },
-});
-
-const upload = multer({ storage });
 
 // **** Functions **** //
 
@@ -81,7 +63,7 @@ router.get(paths.current, authMiddleware, userCurrentController);
 router.post(
   paths.avatars,
   authMiddleware,
-  upload.single('avatar'),
+  uploadAvatarMiddleware,
   userAvatarUpdateController
 );
 

@@ -5,6 +5,8 @@
 const express = require('express');
 const path = require('path');
 
+const paths = require('./paths/publicPaths');
+
 // **** Declarations **** //
 
 const router = express.Router();
@@ -13,7 +15,7 @@ const avatarsPath = path.join(publicPath, 'avatars');
 
 // **** Functions **** //
 
-router.use('/avatars', express.static(avatarsPath));
+router.use(paths.avatars, express.static(avatarsPath));
 
 // **** Exports **** //
 
