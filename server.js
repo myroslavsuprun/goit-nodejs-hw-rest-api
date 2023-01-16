@@ -2,8 +2,8 @@
 require('./src/preStart');
 
 const app = require('./src/app');
-const { connectMongo } = require('./src/db/connection');
-const envVariables = require('./src/utils/envVariables');
+const { connectMongo } = require('./src/db');
+const { envVariables } = require('./src/utils');
 
 const port = envVariables.PORT || 3000;
 

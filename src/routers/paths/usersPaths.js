@@ -5,6 +5,7 @@ const paths = {
   login: '/login',
   logout: '/logout',
   current: '/current',
+  avatars: '/avatars',
 };
 
 module.exports = paths;

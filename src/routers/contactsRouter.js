@@ -4,7 +4,7 @@
 const express = require('express');
 
 // Paths
-const paths = require('./paths/contactsPaths');
+const { contactsPaths: paths } = require('./paths');
 
 const {
   getContactsController,
@@ -13,15 +13,14 @@ const {
   updateContactByIdController,
   updateContactStatusByIdController,
   addContactController,
-} = require('../controllers/contactsController');
-
-const authMiddleware = require('../middlewares/authMiddleware');
+} = require('../controllers/contacts');
 
 // Validation middlewares
 const {
+  authMiddleware,
   validationBySchemaMiddleware,
   idValidationMiddleware,
-} = require('../middlewares/validationMiddlewares');
+} = require('../middlewares');
 
 // Validation schemas
 const {
@@ -29,7 +28,7 @@ const {
   contactStatusUpdateSchema,
   contactAdditionSchema,
   getContactsQuerySchema,
-} = require('../utils/contactsSchema');
+} = require('../utils');
 
 // **** Declarations **** //
 

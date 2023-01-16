@@ -1,7 +1,7 @@
 const express = require('express');
 
 // Paths
-const paths = require('./paths/usersPaths');
+const { usersPaths: paths } = require('./paths');
 
 // Controllers
 const {
@@ -10,21 +10,21 @@ const {
   userLogoutController,
   userCurrentController,
   userSubscriptionUpdateController,
-} = require('../controllers/usersController');
+  userAvatarUpdateController,
+} = require('../controllers/users');
 
 // Middlewares
 const {
+  uploadAvatarMiddleware,
   validationBySchemaMiddleware,
-} = require('../middlewares/validationMiddlewares');
-const authMiddleware = require('../middlewares/authMiddleware');
+  authMiddleware,
+} = require('../middlewares');
 
 // Schemas
-const {
-  userSchema,
-  userSubscriptionUpdateSchema,
-} = require('../utils/userSchema');
+const { userSchema, userSubscriptionUpdateSchema } = require('../utils');
 
 // **** Variables **** //
+
 /**
  * Auth Router module for users path.
  */
@@ -55,6 +55,13 @@ router.get(paths.logout, authMiddleware, userLogoutController);
 
 router.get(paths.current, authMiddleware, userCurrentController);
 
+router.post(
+  paths.avatars,
+  authMiddleware,
+  uploadAvatarMiddleware,
+  userAvatarUpdateController
+);
+
 // **** Export **** //
 
-module.exports = { usersRouter: router };
+module.exports = router;

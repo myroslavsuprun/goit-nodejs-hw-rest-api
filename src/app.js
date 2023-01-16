@@ -11,11 +11,14 @@ const logger = require('morgan');
 const cors = require('cors');
 
 // Routers
-const apiRouter = require('./routes/apiRoute');
+const { apiRouter, publicRouter } = require('./routers');
 
 // Handlers
-const errorHandler = require('./middlewares/errorHandler');
-const notFoundHandler = require('./middlewares/notFoundHandler');
+const {
+  errorHandler,
+  customErrorHandler,
+  notFoundHandler,
+} = require('./middlewares');
 
 // **** Declarations **** //
 
@@ -32,10 +35,12 @@ app.use(express.json());
 // **** Routes **** //
 
 app.use('/api', apiRouter);
+app.use('/public', publicRouter);
 
 // **** Middlewares **** //
 
 app.use(notFoundHandler);
+app.use(customErrorHandler);
 app.use(errorHandler);
 
 // **** Export **** //

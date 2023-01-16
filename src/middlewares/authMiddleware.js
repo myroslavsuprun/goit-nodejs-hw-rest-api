@@ -2,16 +2,27 @@ const jwt = require('jsonwebtoken');
 
 const AuthService = require('../services/authService');
 
-const { NotAuthorizedError } = require('../helpers/errorHelpers');
-const envVariables = require('../utils/envVariables');
+const { NotAuthorizedError, envVariables } = require('../helpers');
 
 /**
  * Authorization middleware which verifies the provided token in the request headers.
  * If token is not valid, an error is thrown.
  */
 const authMiddleware = async (req, _, next) => {
+  if (!req.headers?.authorization) {
+    throw new NotAuthorizedError('Not Authorized.');
+  }
+
   // Get authorization token from the headers.
-  const token = req.headers.authorization.split(' ')[1];
+  const [tokenType, token] = req.headers.authorization.split(' ');
+
+  if (tokenType !== 'Bearer') {
+    throw new NotAuthorizedError('Not Authorized.');
+  }
+
+  if (!token) {
+    throw new NotAuthorizedError('Not Authorized.');
+  }
 
   // Validate token.
   const isValidToken = await verifyToken(token);
@@ -50,4 +61,4 @@ async function verifyToken(token) {
   }
 }
 
-module.exports = authMiddleware;
+module.exports = { authMiddleware };
