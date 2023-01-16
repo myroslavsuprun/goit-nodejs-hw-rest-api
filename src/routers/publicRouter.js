@@ -5,7 +5,7 @@
 const express = require('express');
 const path = require('path');
 
-const paths = require('./paths/publicPaths');
+const { publicPaths: paths } = require('./paths');
 
 // **** Declarations **** //
 

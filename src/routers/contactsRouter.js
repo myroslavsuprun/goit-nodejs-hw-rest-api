@@ -4,7 +4,7 @@
 const express = require('express');
 
 // Paths
-const paths = require('./paths/contactsPaths');
+const { contactsPaths: paths } = require('./paths');
 
 const {
   getContactsController,

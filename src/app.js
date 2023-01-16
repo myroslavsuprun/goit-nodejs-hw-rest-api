@@ -11,8 +11,7 @@ const logger = require('morgan');
 const cors = require('cors');
 
 // Routers
-const apiRouter = require('./routes/apiRoute');
-const publicRouter = require('./routes/publicRoute');
+const { apiRouter, publicRouter } = require('./routers');
 
 // Handlers
 const {

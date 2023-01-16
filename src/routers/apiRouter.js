@@ -4,12 +4,10 @@
 const express = require('express');
 
 // Routers
-const contactsRouter = require('./contactsRoute');
-const usersRouter = require('./usersRoute');
+const { contactsRouter, usersRouter } = require('./');
 
 // Paths
-const usersPaths = require('./paths/usersPaths');
-const contactsPaths = require('./paths/contactsPaths');
+const { usersPaths, contactsPaths } = require('./paths');
 
 // **** Variables **** //
 /**

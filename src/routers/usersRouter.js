@@ -1,7 +1,7 @@
 const express = require('express');
 
 // Paths
-const paths = require('./paths/usersPaths');
+const { usersPaths: paths } = require('./paths');
 
 // Controllers
 const {
