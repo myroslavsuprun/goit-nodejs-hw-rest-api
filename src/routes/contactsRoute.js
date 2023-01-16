@@ -15,13 +15,12 @@ const {
   addContactController,
 } = require('../controllers/contacts');
 
-const authMiddleware = require('../middlewares/authMiddleware');
-
 // Validation middlewares
 const {
+  authMiddleware,
   validationBySchemaMiddleware,
   idValidationMiddleware,
-} = require('../middlewares/validationMiddlewares');
+} = require('../middlewares');
 
 // Validation schemas
 const {

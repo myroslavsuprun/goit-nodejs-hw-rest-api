@@ -18,8 +18,8 @@ const publicRouter = require('./routes/publicRoute');
 const {
   errorHandler,
   customErrorHandler,
-} = require('./middlewares/errorHandler');
-const notFoundHandler = require('./middlewares/notFoundHandler');
+  notFoundHandler,
+} = require('./middlewares');
 
 // **** Declarations **** //
 

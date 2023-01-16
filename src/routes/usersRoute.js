@@ -16,11 +16,9 @@ const {
 // Middlewares
 const {
   uploadAvatarMiddleware,
-} = require('../middlewares/uploadAvatarMiddleware');
-const {
   validationBySchemaMiddleware,
-} = require('../middlewares/validationMiddlewares');
-const authMiddleware = require('../middlewares/authMiddleware');
+  authMiddleware,
+} = require('../middlewares');
 
 // Schemas
 const {
