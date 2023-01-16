@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const envVariables = require('../utils/envVariables');
+const { envVariables } = require('../utils');
 
 const URI = envVariables.MONGO_CONNECTION_URI;
 

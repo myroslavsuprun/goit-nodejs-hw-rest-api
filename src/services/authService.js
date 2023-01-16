@@ -5,8 +5,7 @@ const { User } = require('../db');
 
 const { ConflictError, NotAuthorizedError } = require('../helpers');
 
-const envVariables = require('../utils/envVariables');
-const resizeAndMoveImage = require('../utils/resizeAndMoveImage');
+const { resizeAndMoveImage, envVariables } = require('../utils');
 
 // **** Declarations **** //
 

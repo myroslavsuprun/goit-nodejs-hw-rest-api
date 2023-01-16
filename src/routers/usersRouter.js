@@ -21,10 +21,7 @@ const {
 } = require('../middlewares');
 
 // Schemas
-const {
-  userSchema,
-  userSubscriptionUpdateSchema,
-} = require('../utils/userSchema');
+const { userSchema, userSubscriptionUpdateSchema } = require('../utils');
 
 // **** Variables **** //
 

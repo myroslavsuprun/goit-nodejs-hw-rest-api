@@ -2,8 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const AuthService = require('../services/authService');
 
-const { NotAuthorizedError } = require('../helpers');
-const envVariables = require('../utils/envVariables');
+const { NotAuthorizedError, envVariables } = require('../helpers');
 
 /**
  * Authorization middleware which verifies the provided token in the request headers.

@@ -28,7 +28,7 @@ const {
   contactStatusUpdateSchema,
   contactAdditionSchema,
   getContactsQuerySchema,
-} = require('../utils/contactsSchema');
+} = require('../utils');
 
 // **** Declarations **** //
 
