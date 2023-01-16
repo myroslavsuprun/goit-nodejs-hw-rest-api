@@ -1,7 +1,7 @@
 module.exports = {
-  apiRouter: require('./apiRouter'),
   contactsRouter: require('./contactsRouter'),
-  publicRouter: require('./publicRouter'),
   usersRouter: require('./usersRouter'),
+  apiRouter: require('./apiRouter'),
+  publicRouter: require('./publicRouter'),
   ...require('./paths'),
 };

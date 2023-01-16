@@ -4,7 +4,8 @@
 const express = require('express');
 
 // Routers
-const { contactsRouter, usersRouter } = require('./');
+const contactsRouter = require('./contactsRouter');
+const usersRouter = require('./usersRouter');
 
 // Paths
 const { usersPaths, contactsPaths } = require('./paths');
@@ -16,9 +17,8 @@ const { usersPaths, contactsPaths } = require('./paths');
 const router = express.Router();
 
 // **** Middlewares **** //
-
-router.use(usersPaths.base, usersRouter);
 router.use(contactsPaths.base, contactsRouter);
+router.use(usersPaths.base, usersRouter);
 
 // **** Export **** //
 

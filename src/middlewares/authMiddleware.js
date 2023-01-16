@@ -61,4 +61,4 @@ async function verifyToken(token) {
   }
 }
 
-module.exports = authMiddleware;
+module.exports = { authMiddleware };
