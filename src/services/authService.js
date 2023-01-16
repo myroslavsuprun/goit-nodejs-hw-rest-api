@@ -3,10 +3,7 @@ const path = require('path');
 
 const { User } = require('../db');
 
-const {
-  ConflictError,
-  NotAuthorizedError,
-} = require('../helpers/errorHelpers');
+const { ConflictError, NotAuthorizedError } = require('../helpers');
 
 const envVariables = require('../utils/envVariables');
 const resizeAndMoveImage = require('../utils/resizeAndMoveImage');

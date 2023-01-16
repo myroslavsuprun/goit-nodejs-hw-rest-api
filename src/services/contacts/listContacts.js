@@ -1,6 +1,6 @@
 const Contact = require('../../db');
 
-const { ValidationError } = require('../../helpers/errorHelpers');
+const { ValidationError } = require('../../helpers');
 
 /**
  * Get all the contacts from the DB

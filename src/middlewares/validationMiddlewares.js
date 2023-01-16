@@ -1,6 +1,6 @@
 const { isValidObjectId } = require('mongoose');
 
-const { ValidationError } = require('../helpers/errorHelpers');
+const { ValidationError } = require('../helpers');
 
 /**
  * Validation middleware using Joi schema. Applied to request object properties.

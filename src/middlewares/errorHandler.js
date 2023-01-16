@@ -1,4 +1,4 @@
-const { EnhancedError } = require('../helpers/errorHelpers');
+const { EnhancedError } = require('../helpers');
 
 /**
  * Error handler middleware

@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const AuthService = require('../services/authService');
 
-const { NotAuthorizedError } = require('../helpers/errorHelpers');
+const { NotAuthorizedError } = require('../helpers');
 const envVariables = require('../utils/envVariables');
 
 /**

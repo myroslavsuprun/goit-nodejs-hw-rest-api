@@ -1,5 +1,5 @@
 const { updateContact } = require('../../services/contacts');
-const { NotFoundError } = require('../../helpers/errorHelpers');
+const { NotFoundError } = require('../../helpers');
 
 const updateContactByIdController = async (req, res) => {
   const contactId = req.params.contactId;
