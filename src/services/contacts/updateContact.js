@@ -1,4 +1,4 @@
-const Contact = require('../../db/contactModel');
+const Contact = require('../../db');
 
 /**
  * Updates contact with the given properties on the DB

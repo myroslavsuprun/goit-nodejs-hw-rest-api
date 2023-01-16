@@ -1,4 +1,4 @@
-const Contact = require('../../db/contactModel');
+const Contact = require('../../db');
 
 /**
  * Get contact by id from the DB

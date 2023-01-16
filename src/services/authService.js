@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const path = require('path');
 
-const { User } = require('../db/userModel');
+const { User } = require('../db');
 
 const {
   ConflictError,

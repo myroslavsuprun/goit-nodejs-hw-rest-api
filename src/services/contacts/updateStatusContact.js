@@ -1,4 +1,4 @@
-const Contact = require('../../db/contactModel');
+const Contact = require('../../db');
 
 /**
  * Updates contact status with the given id and favorite boolean value
