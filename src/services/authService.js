@@ -50,6 +50,7 @@ class AuthService {
     return createdUser;
   }
 
+  // TODO: Disable logining if not verified.
   /**
    * Login user by email and password
    *
@@ -135,6 +136,8 @@ class AuthService {
 
     await user.exec();
   }
+
+  async sendVerificationEmail(email) {}
 
   /**
    * Get user's data from the DB by id.

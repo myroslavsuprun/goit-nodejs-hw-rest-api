@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const bcrypt = require('bcrypt');
 const gravatar = require('gravatar');
+const { v4: uuidv4 } = require('uuid');
 
 // **** Declaration **** //
 
@@ -40,7 +41,6 @@ const userSchema = new Schema(
     },
     verificationToken: {
       type: String,
-      required: [true, 'Verify token is required'],
     },
   },
   { versionKey: false }
@@ -61,11 +61,24 @@ userSchema.pre('save', async function (next) {
 
 userSchema.pre('save', async function (next) {
   if (this.isNew && this.isModified('email')) {
-    const urlOtions = { protocol: 'https', s: 250, rating: 'g', d: 'robohash' };
+    const urlOptions = {
+      protocol: 'https',
+      s: 250,
+      rating: 'g',
+      d: 'robohash',
+    };
 
-    const url = gravatar.url(this.email, urlOtions, true);
+    const url = gravatar.url(this.email, urlOptions, true);
 
     this.avatarURL = url;
+  }
+
+  next();
+});
+
+userSchema.pre('save', function (next) {
+  if (this.isNew) {
+    this.verificationToken = uuidv4();
   }
 
   next();
