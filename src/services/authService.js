@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const path = require('path');
-const sgMail = require('@sendgrid/mail');
 
 const { User } = require('../db');
 
@@ -12,17 +11,14 @@ const {
 } = require('../helpers');
 
 const { resizeAndMoveImage, envVariables } = require('../utils');
+const SgMailService = require('./sgMailService');
 
 // **** Declarations **** //
 
 const SECRET_KEY = envVariables.JWT_SECRET;
-const SEND_GRID_API_KEY = envVariables.SEND_GRID_API_KEY;
-const { PORT, HOST } = envVariables;
 const uploadDir = path.join(process.cwd(), 'public', 'avatars');
 
 // **** Functions **** //
-
-sgMail.setApiKey(SEND_GRID_API_KEY);
 
 /**
  * Authentication user service
@@ -156,26 +152,15 @@ class AuthService {
       );
     }
 
-    // TODO: Extract sgMail logic to utils.
+    if (user.verify) {
+      throw new ValidationError('User has already been verified.');
+    }
+
     const { verificationToken } = user;
 
-    const msg = {
-      to: email,
-      from: 'sirmiroslavsuprun@gmail.com',
-      subject: 'Verify your registration on ContactAPI',
-      text: `Hi there, \
-      Thank you for registration on ContactsAPI service. \
-      Please, verify your email address: \
-      http://${HOST}:${PORT}/api/users/verfiy/${verificationToken}
-      `,
-      html: `<p>Hi there, </p> \
-      <p>Thank you for registration on ContactsAPI service.</p>\
-      <p>Please, <a href="http://${HOST}:${PORT}/api/users/verfiy/${verificationToken}">
-      verify</a> your email address.</p>\
-      `,
-    };
+    const mailService = new SgMailService(email);
 
-    await sgMail.send(msg);
+    await mailService.sendVerificationMessage(verificationToken);
   }
 
   /**
