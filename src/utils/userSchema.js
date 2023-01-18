@@ -9,4 +9,22 @@ const userSchema = Joi.object({
   password: Joi.string().alphanum().required(),
 });
 
-module.exports = { userSchema, userSubscriptionUpdateSchema };
+const userVerificationIdSchema = Joi.object({
+  verificationToken: Joi.string()
+    .regex(
+      /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/
+    )
+    .message("'verificationToken' must represent a uuid value.")
+    .required(),
+});
+
+const userVerificationResendSchema = Joi.object({
+  email: Joi.string().email().required(),
+});
+
+module.exports = {
+  userSchema,
+  userSubscriptionUpdateSchema,
+  userVerificationIdSchema,
+  userVerificationResendSchema,
+};

@@ -5,8 +5,7 @@ const userVerificationController = async (req, res) => {
 
   await AuthService.verifyUser(verificationToken);
 
-  res.status(204);
-  res.send();
+  res.sendStatus(204);
 };
 
 module.exports = { userVerificationController };

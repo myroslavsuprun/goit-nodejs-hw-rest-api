@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const sgMail = require('@sendgrid/mail');
 
 const { User } = require('../db');
 
@@ -7,6 +8,7 @@ const {
   ConflictError,
   NotAuthorizedError,
   NotFoundError,
+  ValidationError,
 } = require('../helpers');
 
 const { resizeAndMoveImage, envVariables } = require('../utils');
@@ -14,9 +16,13 @@ const { resizeAndMoveImage, envVariables } = require('../utils');
 // **** Declarations **** //
 
 const SECRET_KEY = envVariables.JWT_SECRET;
+const SEND_GRID_API_KEY = envVariables.SEND_GRID_API_KEY;
+const { PORT, HOST } = envVariables;
 const uploadDir = path.join(process.cwd(), 'public', 'avatars');
 
 // **** Functions **** //
+
+sgMail.setApiKey(SEND_GRID_API_KEY);
 
 /**
  * Authentication user service
@@ -50,7 +56,6 @@ class AuthService {
     return createdUser;
   }
 
-  // TODO: Disable logining if not verified.
   /**
    * Login user by email and password
    *
@@ -65,6 +70,10 @@ class AuthService {
 
     if (!user) {
       throw new NotAuthorizedError('The email or password is incorrect.');
+    }
+
+    if (!user.verify) {
+      throw new ValidationError('User is not verified.');
     }
 
     const { id } = user;
@@ -132,12 +141,42 @@ class AuthService {
       throw new NotFoundError('User has not been found.');
     }
 
-    user.update(undefined, { verify: true });
-
-    await user.exec();
+    await User.updateOne(
+      { verificationToken },
+      { verify: true, verificationToken: null }
+    );
   }
 
-  async sendVerificationEmail(email) {}
+  async sendVerificationEmail(email) {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new NotFoundError(
+        'User with the provided email has not been found.'
+      );
+    }
+
+    // TODO: Extract sgMail logic to utils.
+    const { verificationToken } = user;
+
+    const msg = {
+      to: email,
+      from: 'sirmiroslavsuprun@gmail.com',
+      subject: 'Verify your registration on ContactAPI',
+      text: `Hi there, \
+      Thank you for registration on ContactsAPI service. \
+      Please, verify your email address: \
+      http://${HOST}:${PORT}/api/users/verfiy/${verificationToken}
+      `,
+      html: `<p>Hi there, </p> \
+      <p>Thank you for registration on ContactsAPI service.</p>\
+      <p>Please, <a href="http://${HOST}:${PORT}/api/users/verfiy/${verificationToken}">
+      verify</a> your email address.</p>\
+      `,
+    };
+
+    await sgMail.send(msg);
+  }
 
   /**
    * Get user's data from the DB by id.
