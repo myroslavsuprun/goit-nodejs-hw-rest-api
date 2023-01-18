@@ -11,6 +11,7 @@ const {
   userCurrentController,
   userSubscriptionUpdateController,
   userAvatarUpdateController,
+  userVerificationController,
 } = require('../controllers/users');
 
 // Middlewares
@@ -61,6 +62,9 @@ router.post(
   uploadAvatarMiddleware,
   userAvatarUpdateController
 );
+
+// TODO: add validation middleware;
+router.get(paths.verify, userVerificationController);
 
 // **** Export **** //
 

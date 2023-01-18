@@ -6,6 +6,7 @@ const paths = {
   logout: '/logout',
   current: '/current',
   avatars: '/avatars',
+  verify: '/verify/:verificationToken',
 };
 
 module.exports = paths;

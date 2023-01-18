@@ -5,4 +5,5 @@ module.exports = {
   ...require('./userRegistration'),
   ...require('./userSubscriptionUpdate'),
   ...require('./userAvatarUpdate'),
+  ...require('./userVerification'),
 };

@@ -3,7 +3,11 @@ const path = require('path');
 
 const { User } = require('../db');
 
-const { ConflictError, NotAuthorizedError } = require('../helpers');
+const {
+  ConflictError,
+  NotAuthorizedError,
+  NotFoundError,
+} = require('../helpers');
 
 const { resizeAndMoveImage, envVariables } = require('../utils');
 
@@ -21,6 +25,8 @@ const uploadDir = path.join(process.cwd(), 'public', 'avatars');
  * @member createUser
  * @member loginUser
  * @member logoutUser
+ * @member updateUserAvatar
+ * @member updateUserSubscription
  */
 class AuthService {
   /**
@@ -110,6 +116,24 @@ class AuthService {
     const avatarURL = path.join('/', ...relativePath);
 
     return await User.findByIdAndUpdate(id, { avatarURL }, { new: true });
+  }
+
+  /**
+   * Change user's verification status.
+   *
+   * @param {string} verificationToken - unique verification token.
+   * @returns {void} void.
+   */
+  async verifyUser(verificationToken) {
+    const user = await User.findOne({ verificationToken });
+
+    if (!user) {
+      throw new NotFoundError('User has not been found.');
+    }
+
+    user.update(undefined, { verify: true });
+
+    await user.exec();
   }
 
   /**
