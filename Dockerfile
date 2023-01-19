@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY . /app/
 
-RUN npm install
+RUN yarn install
 
 EXPOSE 8082
 
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
