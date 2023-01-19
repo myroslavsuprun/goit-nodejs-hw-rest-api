@@ -11,6 +11,8 @@ const {
   userCurrentController,
   userSubscriptionUpdateController,
   userAvatarUpdateController,
+  userVerificationController,
+  userVerificationResendController,
 } = require('../controllers/users');
 
 // Middlewares
@@ -21,7 +23,12 @@ const {
 } = require('../middlewares');
 
 // Schemas
-const { userSchema, userSubscriptionUpdateSchema } = require('../utils');
+const {
+  userSchema,
+  userSubscriptionUpdateSchema,
+  userVerificationIdSchema,
+  userVerificationResendSchema,
+} = require('../utils');
 
 // **** Variables **** //
 
@@ -60,6 +67,18 @@ router.post(
   authMiddleware,
   uploadAvatarMiddleware,
   userAvatarUpdateController
+);
+
+router.get(
+  paths.verifyByToken,
+  validationBySchemaMiddleware(userVerificationIdSchema, 'params'),
+  userVerificationController
+);
+
+router.post(
+  paths.verify,
+  validationBySchemaMiddleware(userVerificationResendSchema, 'body'),
+  userVerificationResendController
 );
 
 // **** Export **** //

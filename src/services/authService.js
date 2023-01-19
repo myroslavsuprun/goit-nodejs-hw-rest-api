@@ -3,9 +3,15 @@ const path = require('path');
 
 const { User } = require('../db');
 
-const { ConflictError, NotAuthorizedError } = require('../helpers');
+const {
+  ConflictError,
+  NotAuthorizedError,
+  NotFoundError,
+  ValidationError,
+} = require('../helpers');
 
 const { resizeAndMoveImage, envVariables } = require('../utils');
+const SgMailService = require('./sgMailService');
 
 // **** Declarations **** //
 
@@ -21,6 +27,8 @@ const uploadDir = path.join(process.cwd(), 'public', 'avatars');
  * @member createUser
  * @member loginUser
  * @member logoutUser
+ * @member updateUserAvatar
+ * @member updateUserSubscription
  */
 class AuthService {
   /**
@@ -58,6 +66,10 @@ class AuthService {
 
     if (!user) {
       throw new NotAuthorizedError('The email or password is incorrect.');
+    }
+
+    if (!user.verify) {
+      throw new ValidationError('User is not verified.');
     }
 
     const { id } = user;
@@ -110,6 +122,45 @@ class AuthService {
     const avatarURL = path.join('/', ...relativePath);
 
     return await User.findByIdAndUpdate(id, { avatarURL }, { new: true });
+  }
+
+  /**
+   * Change user's verification status.
+   *
+   * @param {string} verificationToken - unique verification token.
+   * @returns {void} void.
+   */
+  async verifyUser(verificationToken) {
+    const user = await User.findOne({ verificationToken });
+
+    if (!user) {
+      throw new NotFoundError('User has not been found.');
+    }
+
+    await User.updateOne(
+      { verificationToken },
+      { verify: true, verificationToken: null }
+    );
+  }
+
+  async sendVerificationEmail(email) {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new NotFoundError(
+        'User with the provided email has not been found.'
+      );
+    }
+
+    if (user.verify) {
+      throw new ValidationError('User has already been verified.');
+    }
+
+    const { verificationToken } = user;
+
+    const mailService = new SgMailService(email);
+
+    await mailService.sendVerificationMessage(verificationToken);
   }
 
   /**

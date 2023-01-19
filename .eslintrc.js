@@ -3,8 +3,9 @@ module.exports = {
     commonjs: true,
     es2022: true,
     node: true,
+    jest: true,
   },
-  extends: ['standard', 'prettier', 'jest'],
+  extends: ['standard', 'prettier'],
   parserOptions: {
     ecmaVersion: 13,
   },

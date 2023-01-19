@@ -5,6 +5,8 @@ const userRegistrationController = async (req, res) => {
 
   const { email, subscription, avatarURL } = user;
 
+  await authService.sendVerificationEmail(email);
+
   res.status(201);
   res.json({ email, subscription, avatarURL });
 };
